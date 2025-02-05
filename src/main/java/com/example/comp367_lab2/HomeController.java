@@ -13,7 +13,7 @@ public class HomeController {
     public String home(Model model) {
         LocalTime now = LocalTime.now();
         String greeting = now.getHour() < 12 ? "Good morning" : "Good afternoon";
-        model.addAttribute("message", greeting + ", YourName, Welcome to COMP367");
+        model.addAttribute("message", greeting + ", Matthew, Welcome to COMP367");
         return "index";
     }
 }
