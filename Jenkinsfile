@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_HUB_CREDENTIALS = credentials('barhou')
         IMAGE_NAME = "mattbarhou/comp367-webapp"
     }
 
@@ -21,8 +20,8 @@ pipeline {
 
         stage('Docker Login') {
             steps {
-                script {
-                    sh "echo ${DOCKER_HUB_CREDENTIALS_PSW} | docker login -u ${DOCKER_HUB_CREDENTIALS_USR} --password-stdin"
+                withCredentials([usernamePassword(credentialsId: 'barhou', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    sh "echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USER} --password-stdin"
                 }
             }
         }
@@ -41,7 +40,7 @@ pipeline {
 
         stage('Cleanup') {
             steps {
-                sh "docker rmi ${IMAGE_NAME}:latest"
+                sh "docker rmi ${IMAGE_NAME}:latest || true"
             }
         }
     }
